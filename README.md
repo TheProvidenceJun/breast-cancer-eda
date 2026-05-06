@@ -50,6 +50,22 @@
 *   **생물학적 고찰:** 악성 종양은 주변 조직으로의 침윤(Invasion)과 유전적 불안정성으로 인해 세포핵 경계가 심하게 붕괴됩니다. 데이터 분석 결과, 악성 데이터군에서 **오목함(Concavity)** 수치가 급격히 상승하며, 정상적인 **대칭성(Symmetry)**을 상실하는 것을 Boxplot과 T-test(p-value < 0.05)를 통해 통계적으로 교차 검증했습니다.
 
 ---
+## 4. Machine Learning Scale-up: Feature Engineering
+
+선형 기반 기계학습 모델의 해석력을 높이고 다중공선성(Multicollinearity)을 철저히 해소하기 위해, **VIF(Variance Inflation Factor)** 기반의 Feature Selection을 수행했습니다.
+
+*   **배경:** `mean radius`, `mean perimeter`, `mean area` 등의 변수는 물리적/기하학적으로 강하게 종속되어 있어 모델 가중치(Coefficient)의 심각한 왜곡을 유발합니다.
+*   **해결 전략:** 임계값(Threshold)을 10으로 설정하고, VIF가 가장 높은 변수부터 반복적으로 제거하는 Stepwise 알고리즘을 적용했습니다.
+*   **최종 선택된 변수 (Selected Features):**
+    *   `mean area`: 종양의 제어 불가능한 세포 증식(Proliferation)을 대변.
+    *   `mean concavity`: 주변 조직 침윤에 의한 형태학적 붕괴 대변.
+    *   `mean symmetry`: 유전적 불안정성에 의한 비대칭 성장 대변.
+*   **결과:** 중복되는 기하학적 특성을 덜어내고, 생물학적 독립성을 가진 3개의 핵심 변수만으로 모델을 성공적으로 경량화했습니다.
+
+
+
+---
+
 
 ## 4. Conclusion & Biological Insights
 
@@ -61,7 +77,7 @@
 ## 5. Limitations & Future Work
 
 *   **한계점:** 본 분석은 기초적인 형태학적 변수에만 의존한 EDA로, 실제 임상에서 쓰이는 전사체(Transcriptome) 데이터 등 분자생물학적 변수가 누락되어 있습니다.
-*   **Next Step (모델링 고도화):** 현재 구축된 독립적인 리눅스(Fedora) Conda 환경과 24GB RAM 이상의 가용 메모리 인프라를 적극 활용하여, 향후 대용량 다중 오믹스(Multi-omics) 데이터를 병렬 처리하고 딥러닝 앙상블 모델(e.g., 표적 신약 가상 스크리닝 파이프라인)을 구축하는 방향으로 연구를 확장할 계획입니다.
+*   **Next Step (모델링 고도화):** 현재 구축된 독립적인 리눅스(Fedora) Conda 환경과 16GB RAM 이상의 가용 메모리 인프라를 적극 활용하여, 향후 대용량 다중 오믹스(Multi-omics) 데이터를 병렬 처리하고 딥러닝 앙상블 모델(e.g., 표적 신약 가상 스크리닝 파이프라인)을 구축하는 방향으로 연구를 확장할 계획입니다.
 
 ---
 *Maintained by 3rd-year Undergraduate Student, Soongsil University
