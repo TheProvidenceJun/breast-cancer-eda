@@ -45,3 +45,23 @@
 *   **Scatter Plot:** 크기(`mean radius`)와 질감(`mean texture`) 단 두 개의 변수만으로도 양성과 악성 데이터가 비교적 뚜렷하게 군집화(Clustering)되는 것을 확인했습니다. 이는 선형 분류기(Linear Classifier)로도 준수한 성능을 낼 수 있음을 암시합니다.
 *   **Correlation Heatmap:** `radius`, `perimeter`, `area` 간의 상관계수가 0.99 이상으로 나타납니다. 향후 예측 모델링 단계에서는 다중공선성(Multicollinearity)을 방지하고 모델을 경량화하기 위해, 물리적으로 동일한 차원을 설명하는 변수들에 대한 Feature Selection이 필요합니다.
 
+### 3.3. 종양의 형태학적 붕괴와 유의성 (Morphological Irregularity)
+![Shape Features](./images/shape_features_boxplot.png)
+*   **생물학적 고찰:** 악성 종양은 주변 조직으로의 침윤(Invasion)과 유전적 불안정성으로 인해 세포핵 경계가 심하게 붕괴됩니다. 데이터 분석 결과, 악성 데이터군에서 **오목함(Concavity)** 수치가 급격히 상승하며, 정상적인 **대칭성(Symmetry)**을 상실하는 것을 Boxplot과 T-test(p-value < 0.05)를 통해 통계적으로 교차 검증했습니다.
+
+---
+
+## 4. Conclusion & Biological Insights
+
+본 EDA 프로젝트를 통해, 단순한 수치 데이터 배열에서 다음과 같은 생물학적 특징을 성공적으로 도출했습니다.
+1.  **세포 증식 제어 상실:** 악성 종양의 `Area`와 `Radius`의 압도적 증가치 확인.
+2.  **종양 내 이질성 (Intratumor Heterogeneity):** 악성 종양 그룹 내 형태학적 변수(`Texture`, `Smoothness`)의 높은 분산(Variance) 확인.
+3.  **형태적 붕괴 (Morphological Breakdown):** `Concavity` 및 `Symmetry` 지표를 통한 악성 종양의 비대칭적 성장 및 침윤적 특성 규명.
+
+## 5. Limitations & Future Work
+
+*   **한계점:** 본 분석은 기초적인 형태학적 변수에만 의존한 EDA로, 실제 임상에서 쓰이는 전사체(Transcriptome) 데이터 등 분자생물학적 변수가 누락되어 있습니다.
+*   **Next Step (모델링 고도화):** 현재 구축된 독립적인 리눅스(Fedora) Conda 환경과 24GB RAM 이상의 가용 메모리 인프라를 적극 활용하여, 향후 대용량 다중 오믹스(Multi-omics) 데이터를 병렬 처리하고 딥러닝 앙상블 모델(e.g., 표적 신약 가상 스크리닝 파이프라인)을 구축하는 방향으로 연구를 확장할 계획입니다.
+
+---
+*Maintained by 3rd-year Undergraduate Student, Soongsil University
