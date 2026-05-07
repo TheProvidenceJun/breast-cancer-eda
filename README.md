@@ -62,6 +62,21 @@
     *   `mean symmetry`: 유전적 불안정성에 의한 비대칭 성장 대변.
 *   **결과:** 중복되는 기하학적 특성을 덜어내고, 생물학적 독립성을 가진 3개의 핵심 변수만으로 모델을 성공적으로 경량화했습니다.
 
+---
+
+## 5. Interpretable Baseline Modeling: Logistic Regression
+
+블랙박스 모델을 적용하기 전, 추출된 핵심 변수들이 암 발현에 미치는 생물학적 가중치를 수치화하여 증명하기 위해 로지스틱 회귀(Logistic Regression) 베이스라인 모델을 구축했습니다.
+
+### 5.1. 모델링 전략 및 전처리
+*   **Target Alignment:** 의료 예측 모델의 표준 논리에 맞추어 악성(Malignant)을 Positive(1), 양성(Benign)을 Negative(0)로 재매핑하여 리스크를 예측하도록 설계했습니다.
+*   **Standard Scaling:** 단위가 서로 다른 변수(`area`와 `concavity` 등)가 회귀 계수에 미치는 왜곡을 방지하기 위해 `StandardScaler`를 적용하여 데이터의 분포를 정규화했습니다.
+*   **Data Leakage Prevention:** Train set(80%)에만 스케일러를 Fit하여 검증 데이터의 정보 누수를 철저히 차단했습니다.
+
+### 5.2. Coefficient Analysis (생물학적 가중치 해석)
+![Feature Importance](./images/logistic_coefficients.png)
+*   **해석:** 학습된 회귀 모델의 계수(Coefficient)를 추출한 결과, `mean area`가 약 +3.43으로 가장 강력한 악성 판단 가중치를 가짐을 증명했습니다. 이는 형태의 붕괴(`concavity`, `symmetry`)도 중요하지만, **근본적인 세포 증식(Proliferation)에 의한 부피 팽창이 암세포를 특정하는 가장 지배적인 물리적 지표**임을 수학적으로 뒷받침합니다.
+* 
 
 
 ---
