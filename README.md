@@ -93,7 +93,7 @@
 
 이러한 선형 베이스라인의 한계(Recall 최적화의 어려움)를 극복하기 위해, 향후 다중 오믹스 데이터를 결합한 딥러닝 앙상블 모델을 구축하고 Decision Threshold(임계값)를 동적으로 조정하는 연구로 확장할 계획입니다.
 
-### 6.2. Precision-Recall Curve 분석 및 과적합(Data Leakage) 방어 원칙
+### 6.2. Precision-Recall Curve 분석 및 과적합(overfitting) 방어 원칙
 
 의료 데이터의 특성상 위음성(False Negative)을 통제하기 위해 재현율(Recall)을 최우선으로 고려해야 합니다. 이를 시각적으로 확인하기 위해 Precision-Recall Curve를 도출했습니다.
 
@@ -114,6 +114,26 @@
 
 ---
 
+
+## 7. Model Stabilization & Clinical Optimization (Phase 9)
+
+Phase 8.5에서 수립한 'Data Leakage 차단' 원칙에 입각하여, 테스트 셋의 무결성을 유지한 채 K-Fold 교차 검증과 Class Weight 조정을 통해 악성 종양 재현율(Recall)을 극대화했습니다.
+
+### 7.1. GridSearchCV 아키텍처 및 결과
+* **최적화 목표 (Scoring):** `Accuracy`가 아닌 `Recall`을 타겟으로 탐색을 진행하여 위음성(False Negative) 방어 체계를 구축했습니다.
+* **최적 파라미터 도출:** `{'C': 0.1, 'class_weight': {0: 1, 1: 5}, 'penalty': 'l2'}`
+* **수학적/임상적 의의:**
+    * **강력한 규제 (`C=0.1`):** 소규모 오믹스 데이터 특성상 발생할 수 있는 과적합을 방지하기 위해 강한 L2 규제가 도출되었습니다.
+    * **클래스 가중치 (`1:5`):** 악성 종양 오분류에 5배의 수학적 페널티를 부여하여, 테스트 데이터의 임계값 조작(Leakage) 없이 모델의 손실 함수(Loss Function) 자체가 암 진단에 민감해지도록 재설계되었습니다.
+
+### 7.2. 성능 갱신 검증 (Tuned Confusion Matrix)
+![Tuned Confusion Matrix](./images/tuned_confusion_matrix.png)
+* **핵심 성과:** 하이퍼파라미터 최적화 적용 결과, 고립된 테스트 데이터 환경에서 **암 환자 누락(False Negative) 건수를 기존 10명에서 단 1명으로 획기적으로 감소시켰습니다 (Recall 향상: 76.2% -> 97.6%).**
+* 증가한 위양성(False Positive, 11건)은 임상 환경에서 조직검사 등의 2차 스크리닝으로 커버 가능한 영역이므로, 환자의 생존율을 최우선으로 담보하는 성공적인 최적화 모델임을 입증했습니다.
+
+
+
+---
 ## ?. Conclusion & Biological Insights
 
 본 EDA 프로젝트를 통해, 단순한 수치 데이터 배열에서 다음과 같은 생물학적 특징을 성공적으로 도출했습니다.
