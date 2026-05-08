@@ -76,20 +76,33 @@
 ### 5.2. Coefficient Analysis (생물학적 가중치 해석)
 ![Feature Importance](./images/logistic_coefficients.png)
 *   **해석:** 학습된 회귀 모델의 계수(Coefficient)를 추출한 결과, `mean area`가 약 +3.43으로 가장 강력한 악성 판단 가중치를 가짐을 증명했습니다. 이는 형태의 붕괴(`concavity`, `symmetry`)도 중요하지만, **근본적인 세포 증식(Proliferation)에 의한 부피 팽창이 암세포를 특정하는 가장 지배적인 물리적 지표**임을 수학적으로 뒷받침합니다.
-* 
 
+---
+## 6. Clinical Metrics Evaluation (임상 지표 검증)
+
+단순히 전체 정확도(Accuracy)를 높이는 것을 넘어, 의료 인공지능의 핵심인 **'위음성(False Negative) 최소화'** 관점에서 모델을 평가했습니다.
+
+### 6.1. Confusion Matrix & ROC-AUC
+![Clinical Metrics](./images/clinical_metrics.png)
+
+*   **분석 결과:** 
+    *   **Accuracy:** 약 89.5%
+    *   **ROC-AUC:** 0.979 (모델의 전반적인 암/정상 분류 성능이 매우 우수함)
+    *   **Recall (재현율):** 76.2%
+*   **임상적 고찰:** 본 베이스라인 모델은 정밀도(Precision, 94.1%)는 매우 높으나, 재현율(Recall) 측면에서 실제 암 환자의 일부를 정상으로 오진(False Negative)하는 한계를 보였습니다. 생명이 직결된 종양학 데이터에서는 불필요한 추가 검사 비용(False Positive)을 감수하더라도, 병을 놓치는 위음성(False Negative)을 극도로 통제해야 합니다.
+
+이러한 선형 베이스라인의 한계(Recall 최적화의 어려움)를 극복하기 위해, 향후 다중 오믹스 데이터를 결합한 딥러닝 앙상블 모델을 구축하고 Decision Threshold(임계값)를 동적으로 조정하는 연구로 확장할 계획입니다.
 
 ---
 
-
-## 4. Conclusion & Biological Insights
+## ?. Conclusion & Biological Insights
 
 본 EDA 프로젝트를 통해, 단순한 수치 데이터 배열에서 다음과 같은 생물학적 특징을 성공적으로 도출했습니다.
 1.  **세포 증식 제어 상실:** 악성 종양의 `Area`와 `Radius`의 압도적 증가치 확인.
 2.  **종양 내 이질성 (Intratumor Heterogeneity):** 악성 종양 그룹 내 형태학적 변수(`Texture`, `Smoothness`)의 높은 분산(Variance) 확인.
 3.  **형태적 붕괴 (Morphological Breakdown):** `Concavity` 및 `Symmetry` 지표를 통한 악성 종양의 비대칭적 성장 및 침윤적 특성 규명.
 
-## 5. Limitations & Future Work
+## ?. Limitations & Future Work
 
 *   **한계점:** 본 분석은 기초적인 형태학적 변수에만 의존한 EDA로, 실제 임상에서 쓰이는 전사체(Transcriptome) 데이터 등 분자생물학적 변수가 누락되어 있습니다.
 *   **Next Step (모델링 고도화):** 현재 구축된 독립적인 리눅스(Fedora) Conda 환경과 16GB RAM 이상의 가용 메모리 인프라를 적극 활용하여, 향후 대용량 다중 오믹스(Multi-omics) 데이터를 병렬 처리하고 딥러닝 앙상블 모델(e.g., 표적 신약 가상 스크리닝 파이프라인)을 구축하는 방향으로 연구를 확장할 계획입니다.
