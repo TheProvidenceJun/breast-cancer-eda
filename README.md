@@ -115,9 +115,7 @@
 ---
 
 
-## 7. Model Stabilization & Clinical Optimization (Phase 9)
-
-Phase 8.5에서 수립한 'Data Leakage 차단' 원칙에 입각하여, 테스트 셋의 무결성을 유지한 채 K-Fold 교차 검증과 Class Weight 조정을 통해 악성 종양 재현율(Recall)을 극대화했습니다.
+## 7. Model Stabilization & Clinical Optimization 
 
 ### 7.1. GridSearchCV 아키텍처 및 결과
 * **최적화 목표 (Scoring):** `Accuracy`가 아닌 `Recall`을 타겟으로 탐색을 진행하여 위음성(False Negative) 방어 체계를 구축했습니다.
